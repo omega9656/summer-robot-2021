@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -25,6 +26,9 @@ public class Arm {
 
         //sets default position
         arm.setTargetPosition(0);
+        //to-do: set direction
+
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void run(Position position){
@@ -32,6 +36,8 @@ public class Arm {
 
         //updates the arm position to where they currently are
         currentMode = position;
+
+        arm.setPower(.5);
     }
 
     //sets arm to 'drop off' position
