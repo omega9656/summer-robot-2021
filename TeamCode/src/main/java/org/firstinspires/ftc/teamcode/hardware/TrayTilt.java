@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class trayTilt {
+public class TrayTilt {
     public Servo trayTilt;
     public Position currentMode;
 
@@ -18,7 +18,7 @@ public class trayTilt {
 
     }
 
-    public trayTilt(DeviceManager deviceManager){
+    public TrayTilt(DeviceManager deviceManager){
         trayTilt = deviceManager.trayTilt;
         
         trayTilt.setPosition(0);
