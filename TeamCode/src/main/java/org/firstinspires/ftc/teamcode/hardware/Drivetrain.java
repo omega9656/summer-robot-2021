@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.hardware;
-
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class Drivetrain {
-    public DcMotor backLeft;
-    public DcMotor backRight;
-    public DcMotor frontLeft;
-    public DcMotor frontRight;
+    public DcMotorEx backLeft;
+    public DcMotorEx backRight;
+    public DcMotorEx frontLeft;
+    public DcMotorEx frontRight;
 
     public Drivetrain(DeviceManager deviceManager){
         backLeft = deviceManager.backLeft;
@@ -17,16 +16,16 @@ public class Drivetrain {
         frontRight = deviceManager.frontRight;
 
         // set motor modes
-        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        backRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        frontLeft.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        frontRight.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         // set 0 power behavior to brake (actively resists movement)
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
         // All motors should rotate toward the front of the robot
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
