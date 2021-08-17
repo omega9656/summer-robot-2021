@@ -24,10 +24,14 @@ public class OmegaTeleOp extends OpMode {
 
     @Override
     public void loop() {
-
+        drive(2, DriveMode.NORMAL);
+        trayTilt();
+        arm();
+        flap();
+        intake();
     }
 
-    public void drive(double strafe) {
+    public void drive(double strafe, DriveMode driveMode) {
         // https://gm0.copperforge.cc/en/stable/docs/software/mecanum-drive.html
         // https://www.chiefdelphi.com/t/paper-mecanum-and-omni-kinematic-and-force-analysis/106153/5 (3rd paper)
 
