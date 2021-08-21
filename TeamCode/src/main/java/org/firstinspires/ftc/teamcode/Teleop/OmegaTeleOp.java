@@ -2,24 +2,35 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.internal.ftdi.eeprom.FT_EEPROM_232H;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
 @TeleOp(name="Normal Drive")
-public class OmegaTeleOp extends OpMode {
+public abstract class OmegaTeleOp extends OpMode {
     Robot robot;
+    ElapsedTime time = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+
     DriveMode driveMode;
 
+
+    //different drive modes
     public enum DriveMode{
         SQUARED,
         CUBED,
         NORMAL;
     }
 
+    public static final double DEFAULT_STRAFE = 2;
+
+    abstract public DriveMode getCurrentMode();
+
     @Override
     public void init(){
         robot = new Robot(hardwareMap);
         robot.init(false);
+        time.reset();
     }
 
     @Override
@@ -29,6 +40,34 @@ public class OmegaTeleOp extends OpMode {
         arm();
         flap();
         intake();
+    }
+
+    public void dropOffElements(){
+
+        if(gamepad1.right_bumper ){
+            ElapsedTime time = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+
+            final int RUN_MILLS = 1500;
+            final int RUN_MILLISECONDS = 1000;
+            time.reset();
+            time.startTime();
+            while(time.milliseconds() < RUN_MILLS){
+                drive(DEFAULT_STRAFE,DriveMode.NORMAL);
+            }
+            robot.trayTilt.ready();
+            time.reset();
+            time.startTime();
+            while(time.milliseconds() < RUN_MILLISECONDS){
+                drive(DEFAULT_STRAFE, DriveMode.NORMAL);
+            }
+            robot.trayTilt.tilt();
+            time.reset();
+            time.startTime();
+            while(time.milliseconds() < RUN_MILLS){
+                drive(DEFAULT_STRAFE,DriveMode.NORMAL);
+            }
+            robot.trayTilt.ready();
+        }
     }
 
     public void drive(double strafe, DriveMode driveMode) {
