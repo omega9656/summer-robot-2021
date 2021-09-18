@@ -11,8 +11,8 @@ public class Arm {
     public Position currentMode;
 
     public enum Position{
-        DROP_OFF(1), //dropping off the game elements
-        PICKUP(2); //picking up game elements
+        DROP_OFF(1000), //dropping off the game elements
+        PICKUP(2000); //picking up game elements
 
         public int armPosition;
 
@@ -37,7 +37,7 @@ public class Arm {
         //updates the arm position to where they currently are
         currentMode = position;
 
-        arm.setPower(.5);
+        arm.setPower(.2);
     }
 
     //sets arm to 'drop off' position

@@ -20,7 +20,7 @@ public class Flap {
 
     public Flap (DeviceManager deviceManager){
 
-        flap = deviceManager.flap;
+        //flap = deviceManager.flap;
 
         flap.setPosition(0);
 

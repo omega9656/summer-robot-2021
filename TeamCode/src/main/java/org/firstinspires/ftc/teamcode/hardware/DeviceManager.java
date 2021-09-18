@@ -14,7 +14,7 @@ public class DeviceManager {
 
 
     public Servo trayTilt;
-    public Servo flap;
+    //public Servo flap;
 
     //Drivetrain Motors
     public DcMotorEx backLeft, backRight, frontLeft, frontRight;
@@ -29,8 +29,8 @@ public class DeviceManager {
         }
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         arm = hardwareMap.get(DcMotorEx.class, "arm");
-        trayTilt = hardwareMap.get(Servo.class, "tray_tilt");
-        flap = hardwareMap.get(Servo.class, "flap");
+        //trayTilt = hardwareMap.get(Servo.class, "tray_tilt");
+        //flap = hardwareMap.get(Servo.class, "flap");
     }
 
     public DeviceManager(HardwareMap hardwareMap){

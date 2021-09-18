@@ -2,15 +2,18 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.internal.ftdi.eeprom.FT_EEPROM_232H;
 import org.firstinspires.ftc.teamcode.hardware.Robot;
 
-@TeleOp(name="Normal Drive")
 public abstract class OmegaTeleOp extends OpMode {
     Robot robot;
     ElapsedTime time = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
+
+    final int RUN_MILLS = 1500;
+    final int RUN_MILLISECONDS = 1000;
 
     DriveMode driveMode;
 
@@ -36,19 +39,21 @@ public abstract class OmegaTeleOp extends OpMode {
     @Override
     public void loop() {
         drive(2, DriveMode.NORMAL);
-        trayTilt();
+        //trayTilt();
         arm();
-        flap();
+        //flap();
         intake();
+        moveArm();
+        //dropOffCircles();
+        //dropOffCubes();
+
+        telemetry.addLine("Arm")
+                .addData("Arm Position: ", robot.arm.arm.getCurrentPosition());
     }
 
-    public void dropOffElements(){
+    /*public void dropOffCircles(){
 
         if(gamepad1.right_bumper ){
-            ElapsedTime time = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
-
-            final int RUN_MILLS = 1500;
-            final int RUN_MILLISECONDS = 1000;
             time.reset();
             time.startTime();
             while(time.milliseconds() < RUN_MILLS){
@@ -67,6 +72,69 @@ public abstract class OmegaTeleOp extends OpMode {
                 drive(DEFAULT_STRAFE,DriveMode.NORMAL);
             }
             robot.trayTilt.ready();
+        }
+    }*/
+
+    public void dropOff(boolean flap){
+
+        time.reset();
+        time.startTime();
+
+        while(time.milliseconds() < 200){
+            drive(DEFAULT_STRAFE, DriveMode.NORMAL);
+        }
+
+        robot.trayTilt.ready(); // already should be in position
+
+        // lift arm
+        time.reset();
+        time.startTime();
+        while(time.milliseconds() < 1000){
+            robot.arm.dropOff();
+        }
+
+        // tilt tray and open flap
+        time.reset();
+        time.startTime();
+        while(time.milliseconds() < 500){
+            robot.trayTilt.tilt();
+            if (flap) robot.flap.open();
+            robot.flap.open();
+        }
+
+
+        //tilt back and close flap
+        time.reset();
+        time.startTime();
+        while(time.milliseconds() < 500){
+            robot.trayTilt.ready();
+            if (flap) robot.flap.close();
+        }
+
+        // drop arm back down
+        time.reset();
+        time.startTime();
+        while (time.milliseconds() < 1000){
+            robot.arm.pickUp();
+        }
+
+    }
+
+    public void dropOffCubes(){
+        if (gamepad1.left_bumper){
+            dropOff(true);
+        }
+    }
+
+    public void dropOffCircles(){
+        if (gamepad1.right_bumper){
+            dropOff(false);
+        }
+    }
+
+    public void moveArm(){
+        if (gamepad1.right_bumper){
+            robot.arm.dropOff();
         }
     }
 
@@ -87,9 +155,10 @@ public abstract class OmegaTeleOp extends OpMode {
         // calculate initial power from gamepad inputs
         // to understand this, draw force vector diagrams (break into components)
         // and observe the goBILDA diagram on the GM0 page (linked above)
-        double frontLeftPower = vertical + horizontal + rotate;
+        // both our front wheel powers are set to negative because of gears
+        double frontLeftPower = (vertical + horizontal + rotate);
         double backLeftPower = vertical - horizontal + rotate;
-        double frontRightPower = vertical - horizontal - rotate;
+        double frontRightPower = -(vertical - horizontal - rotate) * 0.4;
         double backRightPower = vertical + horizontal - rotate;
 
         // if there is a power level that is out of range
@@ -116,13 +185,13 @@ public abstract class OmegaTeleOp extends OpMode {
         }
 
         // square or cube gamepad inputs
-        if (driveMode == DriveMode.SQUARED) {
+        if (getCurrentMode() == DriveMode.SQUARED) {
             // need to keep the sign, so multiply by absolute value of itself
             frontLeftPower *= Math.abs(frontLeftPower);
             backLeftPower *= Math.abs(backLeftPower);
             frontRightPower *= Math.abs(frontRightPower);
             backRightPower *= Math.abs(backRightPower);
-        } else if (driveMode == DriveMode.CUBED) {
+        } else if (getCurrentMode() == DriveMode.CUBED) {
             frontLeftPower = Math.pow(frontLeftPower, 3);
             backLeftPower = Math.pow(backLeftPower, 3);
             frontRightPower = Math.pow(frontRightPower, 3);
@@ -137,14 +206,14 @@ public abstract class OmegaTeleOp extends OpMode {
     }
 
     public void intake(){
-        if(gamepad2.left_bumper){
+        if(gamepad2.left_bumper) {
             robot.intake.in();
         }
 
-        else if(gamepad2.right_bumper){
+        else if(gamepad2.right_bumper) {
             robot.intake.out();
         }
-        else{
+        else {
             robot.intake.stop();
         }
     }
@@ -163,8 +232,11 @@ public abstract class OmegaTeleOp extends OpMode {
              pressedOnce = false;
          }
     }
+
+
     public void flap(){
         boolean pressedOnce = false;
+
         if(gamepad2.x && !pressedOnce){
             robot.flap.open();
             pressedOnce = true;

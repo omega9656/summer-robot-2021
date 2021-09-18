@@ -25,7 +25,7 @@ public class Robot {
         }
         intake = new Intake(deviceManager);
         arm = new Arm(deviceManager);
-        flap = new Flap(deviceManager);
-        trayTilt = new TrayTilt(deviceManager);
+        //flap = new Flap(deviceManager);
+        //trayTilt = new TrayTilt(deviceManager);
     }
 }
