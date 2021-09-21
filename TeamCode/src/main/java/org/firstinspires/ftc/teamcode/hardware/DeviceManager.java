@@ -29,7 +29,7 @@ public class DeviceManager {
         }
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         arm = hardwareMap.get(DcMotorEx.class, "arm");
-        //trayTilt = hardwareMap.get(Servo.class, "tray_tilt");
+        trayTilt = hardwareMap.get(Servo.class, "tray_tilt");
         //flap = hardwareMap.get(Servo.class, "flap");
     }
 

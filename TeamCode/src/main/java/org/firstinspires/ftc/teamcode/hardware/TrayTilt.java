@@ -19,7 +19,7 @@ public class TrayTilt {
     }
 
     public TrayTilt(DeviceManager deviceManager){
-        //trayTilt = deviceManager.trayTilt;
+        trayTilt = deviceManager.trayTilt;
         
         trayTilt.setPosition(0);
 

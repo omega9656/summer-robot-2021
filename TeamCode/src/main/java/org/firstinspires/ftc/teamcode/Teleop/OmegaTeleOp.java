@@ -46,6 +46,7 @@ public abstract class OmegaTeleOp extends OpMode {
         moveArm();
         //dropOffCircles();
         //dropOffCubes();
+        moveTrayTilt();
 
         telemetry.addLine("Arm")
                 .addData("Arm Position: ", robot.arm.arm.getCurrentPosition());
@@ -119,6 +120,15 @@ public abstract class OmegaTeleOp extends OpMode {
         }
 
     }
+
+    public void moveTrayTilt() {
+        if (gamepad1.x) {
+            robot.trayTilt.tilt();
+        } else if (gamepad1.y) {
+            robot.trayTilt.ready();
+        }
+    }
+
 
     public void dropOffCubes(){
         if (gamepad1.left_bumper){
